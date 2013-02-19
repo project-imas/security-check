@@ -71,6 +71,8 @@ typedef void (^cbBlock) (void);
 //--------------------------------------------------------------------
 - (void) weHaveAProblem {
     
+    dispatch_source_cancel(_timer);
+    
     printf("Houston we have a problem - debugger attached!");
     
 }
