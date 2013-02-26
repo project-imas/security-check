@@ -2,7 +2,7 @@
 //  SecurityCheck.h
 //  SecurityCheck
 //
-//  Created by ctHack on 2/26/13.
+//  Created by ct on 2/26/13.
 //  Copyright (c) 2013 MITRE. All rights reserved.
 //
 
