@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "debugCheck.h"
+#import "SecurityCheck.h"
 
 @interface debugCheckTemplate : NSObject {
 
