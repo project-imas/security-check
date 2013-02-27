@@ -9,14 +9,12 @@
 #ifndef SecurityCheck_forkCheck_h
 #define SecurityCheck_forkCheck_h
 
-#define FORK_OUT() raise(SIGKILL); abort(); exit(EXIT_FAILURE);
-
-#define checkFork {                                                            \
+#define checkFork(forkCb) {                                                    \
                                                                                \
     pid_t child = fork();                                                      \
                                                                                \
-    if (child == 0) { exit(0);   }                                             \
-    if (child > 0)  { FORK_OUT();}                                             \
+    if (child == 0) { exit(0); }                                               \
+    if (child > 0)  { forkCb();}                                               \
 }
 
 #endif

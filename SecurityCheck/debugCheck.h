@@ -69,35 +69,59 @@
     }                                                                         \
                                                                               \
     if (proc_list) free(proc_list);                                           \
-}                                                                             
+}
 
 #define DBGCHK_P_TRACED 0x00000800	/* Debugged process being traced */
 
-#define dbgCheck(cb){                            \
-    pid_t pid = 0;                               \
-                                                 \
-    dbgGetPid(&pid);                             \
-                                                 \
-    size_t sz = sizeof(struct kinfo_proc);       \
-                                                 \
-    struct kinfo_proc info;                      \
-                                                 \
-    memset(&info, 0, sz);                        \
-                                                 \
-    int    name[4];                              \
-                                                 \
-    name [0] = CTL_KERN;                         \
-    name [1] = KERN_PROC;                        \
-    name [2] = KERN_PROC_PID;                    \
-    name [3] = pid;                              \
-                                                 \
-    if (sysctl(name,4,&info,&sz,NULL,0) != 0)    \
-        exit(EXIT_FAILURE);                      \
-                                                 \
-    if (info.kp_proc.p_flag & DBGCHK_P_TRACED)   \
-        cb();                                    \
-                                                 \
-}                                                
+#define debugCheck(cb) {                                                       \
+    pid_t pid = 0;                                                             \
+                                                                               \
+    dbgGetPid(&pid);                                                           \
+                                                                               \
+    size_t sz = sizeof(struct kinfo_proc);                                     \
+                                                                               \
+    struct kinfo_proc info;                                                    \
+                                                                               \
+    memset(&info, 0, sz);                                                      \
+                                                                               \
+    int    name[4];                                                            \
+                                                                               \
+    name [0] = CTL_KERN;                                                       \
+    name [1] = KERN_PROC;                                                      \
+    name [2] = KERN_PROC_PID;                                                  \
+    name [3] = pid;                                                            \
+                                                                               \
+    if (sysctl(name,4,&info,&sz,NULL,0) != 0) exit(EXIT_FAILURE);              \
+                                                                               \
+    if (info.kp_proc.p_flag & DBGCHK_P_TRACED) {                               \
+                                                                               \
+        dispatch_source_cancel(_timer);                                        \
+                                                                               \
+        cb();                                                                  \
+                                                                               \
+    }                                                                          \
+}
+
+#define dbgCheck(cb) {                                                         \
+                                                                               \
+    dispatch_queue_t  _queue =                                                 \
+        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);         \
+                                                                               \
+    dispatch_source_t _timer =                                                 \
+        dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER                      \
+                              , 0                                              \
+                              , 0                                              \
+                              ,_queue);                                        \
+                                                                               \
+    dispatch_source_set_timer(_timer                                           \
+                              ,dispatch_time(DISPATCH_TIME_NOW, 0)             \
+                              ,1.0 * NSEC_PER_SEC                              \
+                              ,0.0 * NSEC_PER_SEC);                            \
+                                                                               \
+    dispatch_source_set_event_handler(_timer, ^{debugCheck(cb)});              \
+                                                                               \
+    dispatch_resume(_timer);                                                   \
+}
 
 
 // check <sys/ptrace.h> for PT_DENY_ATTACH == 31

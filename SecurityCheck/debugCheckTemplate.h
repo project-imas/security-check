@@ -10,14 +10,6 @@
 
 #import "SecurityCheck.h"
 
-@interface debugCheckTemplate : NSObject {
-
-//--------------------------------
-// debugCheck timer
-//--------------------------------
-dispatch_queue_t  _queue;
-dispatch_source_t _timer;
-
-}
+@interface debugCheckTemplate : NSObject 
 
 @end

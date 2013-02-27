@@ -17,8 +17,6 @@
                                                                                \
     for (size_t _i = 0; _i < _length; _i++) { _input[_i] ^= _key; }            \
 
-#define FILE_OUT() raise(SIGKILL); abort(); exit(EXIT_FAILURE);
-
 /* 
  ------------------------------------------------
  chkFiles
@@ -39,7 +37,7 @@
  
 */
 
-#define checkFiles {                                                           \
+#define checkFiles(fcb) {                                                      \
                                                                                \
     char chkFiles[] = {                                                        \
                                                                                \
@@ -66,25 +64,81 @@
                                                                                \
     struct stat fStat;                                                         \
                                                                                \
-    char   *cp = chkFiles;                                                     \
-    size_t len = strlen(cp);                                                   \
-    int    xor = FILENAME_PRIMER;                                              \
-    int    cnt = 0;                                                            \
+    char    *fp = chkFiles;                                                    \
+    size_t flen = strlen(fp);                                                  \
+    int    fxor = FILENAME_PRIMER;                                             \
+    int    fcnt = 0;                                                           \
                                                                                \
-    while (len) {                                                              \
+    while (flen) {                                                             \
                                                                                \
-        xor    = FILENAME_PRIMER + cnt;                                        \
+        fxor    = FILENAME_PRIMER + fcnt;                                      \
                                                                                \
-        FILENAME_XOR(xor, cp, len);                                            \
+        FILENAME_XOR(fxor, fp, flen);                                          \
                                                                                \
-        if (stat(cp, &fStat) == 0) { FILE_OUT(); }                             \
+        if (stat(fp, &fStat) == 0) { fcb(); }                                  \
                                                                                \
-        cp    += len + 1;                                                      \
-        len    = strlen(cp);                                                   \
+        fp     += flen + 1;                                                    \
+        flen    = strlen(fp);                                                  \
                                                                                \
-        cnt++;                                                                 \
+        fcnt++;                                                                \
     }                                                                          \
+}
+
+/*
+ ------------------------------------------------
+ chkLinks
+ ------------------------------------------------
+ /Library/Ringtones
+ /Library/Wallpaper
+ /usr/arm-apple-darwin9
+ /usr/include
+ /usr/libexec
+ /usr/share
+ /Applications
+ 
+*/
+
+#define checkLinks(lcb) {                                                      \
                                                                                \
+    char chkLinks[] = {                                                        \
+                                                                               \
+         201,170,143,132,148,135,148,159,201,180,143,136,129,146,137,136,131   \
+        ,149,0                                                                 \
+        ,200,171,142,133,149,134,149,158,200,176,134,139,139,151,134,151,130   \
+        ,149,0                                                                 \
+        ,199,157,155,154,199,137,154,133,197,137,152,152,132,141,197,140,137   \
+        ,154,159,129,134,209,0                                                 \
+        ,198,156,154,155,198,128,135,138,133,156,141,140,0                     \
+        ,197,159,153,152,197,134,131,136,143,146,143,137,0                     \
+        ,196,158,152,153,196,152,131,138,153,142,0                             \
+        ,195,173,156,156,128,133,143,141,152,133,131,130,159,0                 \
+        ,0                                                                     \
+                                                                               \
+    };                                                                         \
+                                                                               \
+    struct stat lStat;                                                         \
+                                                                               \
+    char    *lp = chkLinks;                                                    \
+    size_t llen = strlen(lp);                                                  \
+    int    lxor = FILENAME_PRIMER;                                             \
+    int    lcnt = 0;                                                           \
+                                                                               \
+    while (llen) {                                                             \
+                                                                               \
+        lxor    = FILENAME_PRIMER + lcnt;                                      \
+                                                                               \
+        FILENAME_XOR(lxor, lp, llen);                                          \
+                                                                               \
+        if ( lstat(lp, &lStat) == 0)                                           \
+                                                                               \
+            if (lStat.st_mode & S_IFLNK) { lcb(); }                            \
+                                                                               \
+                                                                               \
+        lp     += llen + 1;                                                    \
+        llen    = strlen(lp);                                                  \
+                                                                               \
+        lcnt++;                                                                \
+    }                                                                          \
 }
 
 #endif
