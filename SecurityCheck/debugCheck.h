@@ -10,6 +10,21 @@
 
 #import <sys/sysctl.h>
 
+//------------------------------------------
+// Assembly level interface to sysctl
+//------------------------------------------
+#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+
+#define IMS_ASM 0
+
+#else
+
+#define IMS_ASM 1
+
+#endif
+
+int readSys(int *, u_int, void *, size_t *);
+
 #define debugCheckNameSz 17
 
 #define dbgGetPid(pid) {                                                      \
@@ -18,12 +33,19 @@
     size_t                length = 0;                                         \
     static const int sysName[]   = { CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0 }; \
                                                                               \
-    err = sysctl( (int *)sysName                                              \
-                , (sizeof(sysName) / sizeof(*sysName)) - 1                    \
-                , NULL                                                        \
-                , &length                                                     \
-                , NULL                                                        \
-                , 0);                                                         \
+    if (IMS_ASM)                                                              \
+                                                                              \
+        err = readSys( (int *)sysName                                         \
+                    , (sizeof(sysName) / sizeof(*sysName)) - 1                \
+                    , NULL                                                    \
+                    , &length);                                               \
+    else                                                                      \
+        err = sysctl( (int *)sysName                                          \
+                    , (sizeof(sysName) / sizeof(*sysName)) - 1                \
+                    , NULL                                                    \
+                    , &length                                                 \
+                    , NULL                                                    \
+                    , 0);                                                     \
                                                                               \
     if (!err) {                                                               \
                                                                               \
@@ -31,12 +53,19 @@
                                                                               \
         if (proc_list) {                                                      \
                                                                               \
-            err = sysctl( (int *)sysName                                      \
-                        , (sizeof(sysName) / sizeof(*sysName)) - 1            \
-                        , proc_list                                           \
-                        , &length                                             \
-                        , NULL                                                \
-                        , 0);                                                 \
+            if (IMS_ASM)                                                      \
+                                                                              \
+                err = readSys( (int *)sysName                                 \
+                            , (sizeof(sysName) / sizeof(*sysName)) - 1        \
+                            , proc_list                                       \
+                            , &length);                                       \
+            else                                                              \
+                err = sysctl( (int *)sysName                                  \
+                            , (sizeof(sysName) / sizeof(*sysName)) - 1        \
+                            , proc_list                                       \
+                            , &length                                         \
+                            , NULL                                            \
+                            , 0);                                             \
         }                                                                     \
     }                                                                         \
                                                                               \
@@ -91,7 +120,15 @@
     name [2] = KERN_PROC_PID;                                                  \
     name [3] = pid;                                                            \
                                                                                \
-    if (sysctl(name,4,&info,&sz,NULL,0) != 0) exit(EXIT_FAILURE);              \
+                                                                               \
+    if (IMS_ASM) {                                                             \
+                                                                               \
+        if (readSys(name,4,&info,&sz)       != 0) exit(EXIT_FAILURE);          \
+                                                                               \
+    } else {                                                                   \
+                                                                               \
+        if (sysctl(name,4,&info,&sz,NULL,0) != 0) exit(EXIT_FAILURE);          \
+    }                                                                          \
                                                                                \
     if (info.kp_proc.p_flag & DBGCHK_P_TRACED) {                               \
                                                                                \

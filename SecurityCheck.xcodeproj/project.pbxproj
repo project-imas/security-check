@@ -16,6 +16,8 @@
 		4819440416CE9C0C0016DB79 /* debugCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 4819440116CE9C0C0016DB79 /* debugCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4819440516CE9C0C0016DB79 /* debugCheckTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4819440216CE9C0C0016DB79 /* debugCheckTemplate.h */; };
 		4819440616CE9C0C0016DB79 /* debugCheckTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4819440316CE9C0C0016DB79 /* debugCheckTemplate.m */; };
+		48379C4116F0D65A00AAFEC6 /* libASM.h in Headers */ = {isa = PBXBuildFile; fileRef = 48379C3F16F0D65A00AAFEC6 /* libASM.h */; };
+		48379C4216F0D65A00AAFEC6 /* readSys.s in Sources */ = {isa = PBXBuildFile; fileRef = 48379C4016F0D65A00AAFEC6 /* readSys.s */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		4819440116CE9C0C0016DB79 /* debugCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debugCheck.h; sourceTree = "<group>"; };
 		4819440216CE9C0C0016DB79 /* debugCheckTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debugCheckTemplate.h; sourceTree = "<group>"; };
 		4819440316CE9C0C0016DB79 /* debugCheckTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = debugCheckTemplate.m; sourceTree = "<group>"; };
+		48379C3F16F0D65A00AAFEC6 /* libASM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libASM.h; sourceTree = "<group>"; };
+		48379C4016F0D65A00AAFEC6 /* readSys.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = readSys.s; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,8 @@
 		48D888D516D3C8F30070C70A /* debugCheck */ = {
 			isa = PBXGroup;
 			children = (
+				48379C3F16F0D65A00AAFEC6 /* libASM.h */,
+				48379C4016F0D65A00AAFEC6 /* readSys.s */,
 				4819440116CE9C0C0016DB79 /* debugCheck.h */,
 				4819440216CE9C0C0016DB79 /* debugCheckTemplate.h */,
 				4819440316CE9C0C0016DB79 /* debugCheckTemplate.m */,
@@ -115,6 +121,7 @@
 				4801A1BA16DD4EA800A8BC0B /* fileCheck.h in Headers */,
 				4819440516CE9C0C0016DB79 /* debugCheckTemplate.h in Headers */,
 				4801A1D016DD625100A8BC0B /* jailbreakCheckTemplate.h in Headers */,
+				48379C4116F0D65A00AAFEC6 /* libASM.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +235,7 @@
 			files = (
 				4819440616CE9C0C0016DB79 /* debugCheckTemplate.m in Sources */,
 				4801A1D116DD625100A8BC0B /* jailbreakCheckTemplate.m in Sources */,
+				48379C4216F0D65A00AAFEC6 /* readSys.s in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
