@@ -10,16 +10,23 @@
 
 #import <sys/sysctl.h>
 
+#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+
 //------------------------------------------
 // Assembly level interface to sysctl
 //------------------------------------------
-#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 
-#define IMS_ASM 0
+#define sysCtlSz(nm,cnt,sz)   readSys((int *)nm,cnt,NULL,sz)
+#define sysCtl(nm,cnt,lst,sz) readSys((int *)nm,cnt,lst, sz)
 
 #else
 
-#define IMS_ASM 0
+//------------------------------------------
+// C level interface to sysctl
+//------------------------------------------
+
+#define sysCtlSz(nm,cnt,sz)   sysctl((int *)nm,cnt,NULL,sz,NULL,0)
+#define sysCtl(nm,cnt,lst,sz) sysctl((int *)nm,cnt,lst, sz,NULL,0)
 
 #endif
 
@@ -33,19 +40,7 @@ int readSys(int *, u_int, void *, size_t *);
     size_t                length = 0;                                         \
     static const int sysName[]   = { CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0 }; \
                                                                               \
-    if (IMS_ASM)                                                              \
-                                                                              \
-        err = readSys( (int *)sysName                                         \
-                    , (sizeof(sysName) / sizeof(*sysName)) - 1                \
-                    , NULL                                                    \
-                    , &length);                                               \
-    else                                                                      \
-        err = sysctl( (int *)sysName                                          \
-                    , (sizeof(sysName) / sizeof(*sysName)) - 1                \
-                    , NULL                                                    \
-                    , &length                                                 \
-                    , NULL                                                    \
-                    , 0);                                                     \
+    err = sysCtlSz((int *)sysName, 4, &length);                               \
                                                                               \
     if (!err) {                                                               \
                                                                               \
@@ -53,19 +48,7 @@ int readSys(int *, u_int, void *, size_t *);
                                                                               \
         if (proc_list) {                                                      \
                                                                               \
-            if (IMS_ASM)                                                      \
-                                                                              \
-                err = readSys( (int *)sysName                                 \
-                            , (sizeof(sysName) / sizeof(*sysName)) - 1        \
-                            , proc_list                                       \
-                            , &length);                                       \
-            else                                                              \
-                err = sysctl( (int *)sysName                                  \
-                            , (sizeof(sysName) / sizeof(*sysName)) - 1        \
-                            , proc_list                                       \
-                            , &length                                         \
-                            , NULL                                            \
-                            , 0);                                             \
+            err = sysCtl((int *)sysName, 4, proc_list, &length);              \
         }                                                                     \
     }                                                                         \
                                                                               \
@@ -120,15 +103,7 @@ int readSys(int *, u_int, void *, size_t *);
     name [2] = KERN_PROC_PID;                                                  \
     name [3] = pid;                                                            \
                                                                                \
-                                                                               \
-    if (IMS_ASM) {                                                             \
-                                                                               \
-        if (readSys(name,4,&info,&sz)       != 0) exit(EXIT_FAILURE);          \
-                                                                               \
-    } else {                                                                   \
-                                                                               \
-        if (sysctl(name,4,&info,&sz,NULL,0) != 0) exit(EXIT_FAILURE);          \
-    }                                                                          \
+    if (sysCtl(name,4,&info,&sz) != 0) exit(EXIT_FAILURE);                     \
                                                                                \
     if (info.kp_proc.p_flag & DBGCHK_P_TRACED) {                               \
                                                                                \

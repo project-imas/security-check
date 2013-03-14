@@ -5,6 +5,9 @@
 // that can be called from C code.
 // WARNING: These functions don't allow more than 4 arguments in each function.
 // For more than 4 arguments, you need a stack frame for arguments after the 4th.
+
+#if defined(__arm__)
+
 .macro BEGIN_FUNCTION
 	.align 2			// Align the function code to a 4-byte (2^n) word boundary.
 	.arm				// Use ARM instructions instead of Thumb.
@@ -48,3 +51,4 @@ _$0:					// Declare the function.
 	.text
 .endmacro
 
+#endif

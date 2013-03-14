@@ -19,7 +19,7 @@
 // r15:		* Program Counter (dont touch!)
 //
 
-#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+#if defined(__arm__)
 
 BEGIN_FUNCTION readSys
     // ---------------
