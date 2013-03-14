@@ -19,7 +19,7 @@
 
 #else
 
-#define IMS_ASM 1
+#define IMS_ASM 0
 
 #endif
 
