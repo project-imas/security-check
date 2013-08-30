@@ -10,21 +10,18 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
 
 ## Installation
 
-- Copy the debugCheck.h file to your project
-- Add security-check to your Xcode project as a subproject and include the debugCheck.h file.  
-
+- Add security-check repository as a submodule to your project `git submodule add git@github.com:project-imas/security-check.git vendor/security-check`
+- include dbgChk.h in your code at the app delegte level and several other places ...
+- 
 ## Usage
 
 - Make calls to the dbgChk macro sevreal times throughout your code
-- Make calls to dbgStop to halt your app on immediate detection
+- Make calls to dbgStop to halt your app on immediate detection 
 
 ## Sample App
 
-The sample application demonstrates the use of the security-check security control. (in process)
+The sample application demonstrates the use of the security-check security control.
 
-## Coming Soon
-
-Jailbreak detection library
 
 ## License
 
