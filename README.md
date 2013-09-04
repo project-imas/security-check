@@ -37,6 +37,27 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
     checkFork(chkCallback);
     checkFiles(chkCallback);
     checkLinks(chkCallback);
+    
+    ...
+    
+    
+- (void) weHaveAProblem {
+    
+    NSLog(@"weHaveAProblem in AppDelegate");
+    
+    //** cause segfault
+    //int *foo = (int*)-1; // make a bad pointer
+    //printf("%d\n", *foo);       // causes segfault
+    
+    //** OR lanuch blank, black colored window that hangs the user
+    SViewController *sc = [[SViewController alloc] init];
+    _window.rootViewController = sc;
+    [_window makeKeyAndVisible];
+    
+    //** recommend not EXITing as foresics can easily find exit(0) and replace with NOP
+    //exit(0);
+}
+
  ```   
 
 Find where the function weHaveAProblem is defined and add code to exit or spin in place etc.
