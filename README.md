@@ -40,28 +40,46 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
     
     ...
     
-    
+    //** Note: Rename this function in your code
 - (void) weHaveAProblem {
     
     NSLog(@"weHaveAProblem in AppDelegate");
     
-    //** cause segfault
+        //** cause segfault
     //int *foo = (int*)-1; // make a bad pointer
     //printf("%d\n", *foo);       // causes segfault
     
-    //** OR lanuch blank, black colored window that hangs the user
+    //** OR launch blank, black colored window that hangs the user
     SViewController *sc = [[SViewController alloc] init];
     _window.rootViewController = sc;
     [_window makeKeyAndVisible];
+
+#if 1
+    //** OR re-launch the splash screen, must be preceded by SViewController as that controller overwrites the rootcontroller
+    //** which changes the app flow
+    UIImageView *myImageView =[[UIImageView alloc]
+                               initWithFrame:CGRectMake(0.0,0.0,self.window.frame.size.width,self.window.frame.size.height)];
     
+    myImageView.image=[UIImage imageNamed:@"Default.png"];
+    myImageView.tag=22;
+    [self.window addSubview:myImageView ];
+    [myImageView release];
+    [self.window bringSubviewToFront:myImageView];
+#endif
+    
+    //** OR make this thread stop and spin
+    //volatile int dummy_side_effect;
+    //
+    //while (1) {  dummy_side_effect = 0; }
+    //NSLog(@"Never prints.");
+
+
     //** recommend not EXITing as foresics can easily find exit(0) and replace with NOP
     //exit(0);
 }
 
  ```   
 
-Find where the function weHaveAProblem is defined and add code to exit or spin in place etc.
- 
 ## Sample App
 
 The sample application demonstrates the use of the security-check security control.
