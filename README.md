@@ -8,6 +8,8 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
 1. Debugger tool use
    - CWE-288: Authentication Bypass Using an Alternate Path or Channel
 
+<img src="security-check.jpg" />
+
 ## Installation
 
 - Add security-check repository as a submodule to your project `git submodule add git@github.com:project-imas/security-check.git vendor/security-check`
