@@ -15,7 +15,7 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
 - Add SecurityCheck Framework to target’s build phase - target dependancies (use +)
 - Add libSecurityCheck.a to targets's build phase - link binary with libraries
 - include #import <SecurityCheck/SecurityCheck.h> in your code at the app delegte level to start
-- 
+
 ## Usage
 
 
