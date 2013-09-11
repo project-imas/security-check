@@ -4,11 +4,12 @@
 
 The iMAS secuirty-check security control offers a continuous jailbreak detect and debug attach checking.  With this information, one can programatically decide to shutdown the app or other loss prevention techniques.  The security control makes system calls at the application level, in particular ptrace and getpid  
 
+<img src="security-check.jpg" />
+
+
 ## Vulnerabilities Addressed
 1. Debugger tool use
    - CWE-288: Authentication Bypass Using an Alternate Path or Channel
-
-<img src="security-check.jpg" />
 
 ## Installation
 
