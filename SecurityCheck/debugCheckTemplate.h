@@ -10,6 +10,9 @@
 
 #import "SecurityCheck.h"
 
+inline void weHaveAProblem() __attribute__((always_inline));
+
 @interface debugCheckTemplate : NSObject 
 
 @end
+

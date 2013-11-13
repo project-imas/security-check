@@ -41,7 +41,7 @@ typedef void (^cbBlock) (void);
             
             __weak id weakSelf = self;
             
-            if (weakSelf) [weakSelf weHaveAProblem];
+            if (weakSelf) weHaveAProblem();
             
         };
 
@@ -51,13 +51,15 @@ typedef void (^cbBlock) (void);
     return self;
 }
 
+
+
+@end
+
 //--------------------------------------------------------------------
 // if a debugger is attched to the app then this method will be called
 //--------------------------------------------------------------------
-- (void) weHaveAProblem {
-        
+void weHaveAProblem() {
+    
     printf("We have a problem - debugger attached!");
     
 }
-
-@end
