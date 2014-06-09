@@ -13,14 +13,16 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
 
 ## Installation
 
-- Add security-check repository as a submodule to your project `git submodule add git@github.com:project-imas/security-check.git vendor/security-check`
-- Drag SecurityCheck.xcodeproj into the your project as a subproject
-- Add SecurityCheck Framework to target’s build phase - target dependancies (use +)
-- Add libSecurityCheck.a to targets's build phase - link binary with libraries
-- include #import <SecurityCheck/SecurityCheck.h> in your code at the app delegte level to start
+* Add security-check repository as a submodule to your project 
+  * `git submodule add git@github.com:project-imas/security-check.git vendor/security-check`
+* Drag SecurityCheck.xcodeproj into the your project as a subproject
+* Add SecurityCheck Framework to target’s build phase - target dependancies (use +)
+* Add libSecurityCheck.a to targets's build phase - link binary with libraries
+* include #import &lt;SecurityCheck/SecurityCheck.h&gt; in your code at the app delegate level to start
 
 ## Usage
 
+Place the following code at the app delegate level and call it early to detect security problems before the core code runs.
 
 ```
     //-----------------------------------
@@ -40,6 +42,9 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
     checkFork(chkCallback);
     checkFiles(chkCallback);
     checkLinks(chkCallback);
+    
+    dbgStop;
+    dbgCheck(chkCallback);
     
     ...
     
@@ -87,6 +92,7 @@ The iMAS secuirty-check security control offers a continuous jailbreak detect an
 
 The sample application demonstrates the use of the security-check security control.
 
+[See the sample application here.](https://github.com/project-imas/SCSampleApp)
 
 ## License
 
