@@ -289,6 +289,9 @@
 				DSTROOT = /tmp/SecurityCheck.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SecurityCheck/SecurityCheck-Prefix.pch";
+				GCC_VERSION = "";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -303,6 +306,9 @@
 				DSTROOT = /tmp/SecurityCheck.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SecurityCheck/SecurityCheck-Prefix.pch";
+				GCC_VERSION = "";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
