@@ -18,7 +18,13 @@ The iMAS security-check security control offers a continuous jailbreak detect an
 * Drag SecurityCheck.xcodeproj into the your project as a subproject
 * Add SecurityCheck Framework to target’s build phase - target dependancies (use +)
 * Add libSecurityCheck.a to targets's build phase - link binary with libraries
-* include #import &lt;SecurityCheck/SecurityCheck.h&gt; in your code at the app delegate level to start
+* include `#import <SecurityCheck/SecurityCheck.h>` in your code at the app delegate level to start
+
+## Installation via CocoaPod
+
+* Add `pod 'SecurityCheck', :git => 'https://github.com/project-imas/security-check.git'` to your Podfile
+* Run `pod install`
+* Include `#import <SecurityCheck/SecurityCheck.h>` in your code at the app delegate level to start
 
 ## Usage
 
