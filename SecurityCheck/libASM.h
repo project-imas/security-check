@@ -6,7 +6,21 @@
 // WARNING: These functions don't allow more than 4 arguments in each function.
 // For more than 4 arguments, you need a stack frame for arguments after the 4th.
 
-#if defined(__arm__)
+#if defined(__LP64__)
+
+.macro BEGIN_FUNCTION
+    .align 2           // Align the function code to a 8-byte (2^n) word boundary.
+    .globl _$0			// Make the function globally accessible.
+    .no_dead_strip _$0	// Stop the optimizer from ignoring this function!
+    .private_extern _$0
+_$0:					// Declare the function.
+.endmacro
+
+.macro END_FUNCTION
+    ret
+.endmacro
+
+#elif defined(__arm__)
 
 .macro BEGIN_FUNCTION
 	.align 2			// Align the function code to a 4-byte (2^n) word boundary.

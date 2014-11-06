@@ -1,6 +1,42 @@
 #include "libASM.h"
 
-//------ ARM registers used:
+#if defined(__LP64__)
+
+//------ AArch64 registers used:
+//
+// x0-x7        input/result
+// x18          platform        save
+// x19-x28      callee saved    save
+// x29(FP)      frame pointer   save
+// x30(LR)      link reg        save
+//
+// d8-d15       callee saved    save
+//
+
+BEGIN_FUNCTION readSys
+    // I don't think this needs more registers saved/restored in prologue/epilogue?
+    // Caller should have saved any needed, and sysctl will save any callee-saved.
+    // x16 is assumed caller saved already
+    // x4-x5 are parameter registers, and we only need to expect x0-x3 for sysctl,
+    // so we should be able zero x4-x5 safely
+
+    // prologue
+    stp fp, lr, [sp, #-16]!
+    add fp, sp, #0
+
+    mov     x4, #0
+    mov     x5, #0
+    mov     x16, #202
+    svc     #128
+
+    //epilogue
+    ldp fp, lr, [sp], #16                   // restore state
+
+END_FUNCTION
+
+#elif defined(__arm__)
+
+//------ AArch32 registers used:
 // r0:	arg0 & result (input & output parameters)
 // r1:	arg1 (input parameter)
 // r2:
@@ -17,9 +53,6 @@
 // r13:		* Stack Pointer (dont touch!)
 // r14:		(must restore if modified)
 // r15:		* Program Counter (dont touch!)
-//
-
-#if defined(__arm__)
 
 BEGIN_FUNCTION readSys
     // ---------------
