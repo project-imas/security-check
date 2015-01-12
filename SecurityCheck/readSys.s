@@ -1,6 +1,6 @@
 #include "libASM.h"
 
-#if defined(__LP64__)
+#if defined(__arm64__)
 
 //------ AArch64 registers used:
 //
