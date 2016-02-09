@@ -2,7 +2,7 @@
 //  debugCheck.h
 //
 //  Created by ct on 1/30/13.
-//  Copyright (c) 2013 MITRE. All rights reserved.
+//  Copyright (c) 2013 The MITRE Corporation. All rights reserved.
 //
 
 #ifndef debugMe_dbgChk_h

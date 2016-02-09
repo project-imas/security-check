@@ -3,7 +3,7 @@
 //  SecurityCheck
 //
 //  Created by ct on 2/26/13.
-//  Copyright (c) 2013 MITRE. All rights reserved.
+//  Copyright (c) 2013 The MITRE Corporation. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

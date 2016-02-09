@@ -3,7 +3,7 @@
 //  SecurityCheck
 //
 //  Created by ct on 2/14/13.
-//  Copyright (c) 2013 MITRE. All rights reserved.
+//  Copyright (c) 2013 The MITRE Corporation. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
