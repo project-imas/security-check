@@ -34,61 +34,9 @@ int readSys(int *, u_int, void *, size_t *);
 
 #define debugCheckNameSz 17
 
-#define dbgGetPid(pid) {                                                      \
-    int                      err = 0;                                         \
-    struct kinfo_proc *proc_list = NULL;                                      \
-    size_t                length = 0;                                         \
-    static const int sysName[]   = { CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0 }; \
-                                                                              \
-    err = sysCtlSz((int *)sysName, 4, &length);                               \
-                                                                              \
-    if (!err) {                                                               \
-                                                                              \
-        proc_list = malloc(length);                                           \
-                                                                              \
-        if (proc_list) {                                                      \
-                                                                              \
-            err = sysCtl((int *)sysName, 4, proc_list, &length);              \
-        }                                                                     \
-    }                                                                         \
-                                                                              \
-    if (!err && proc_list) {                                                  \
-                                                                              \
-        int proc_count = length / sizeof(struct kinfo_proc);                  \
-                                                                              \
-        char buf[debugCheckNameSz];                                           \
-                                                                              \
-        NSString * appName = [[NSBundle mainBundle]                           \
-        objectForInfoDictionaryKey:@"CFBundleName"];                          \
-                                                                              \
-        NSString * procName;                                                  \
-                                                                              \
-        for (int i = 0; i < proc_count; i++) {                                \
-                                                                              \
-            pid_t procPid = proc_list[i].kp_proc.p_pid;                       \
-                                                                              \
-            strlcpy(buf, proc_list[i].kp_proc.p_comm, debugCheckNameSz);      \
-                                                                              \
-            procName = [NSString stringWithFormat:@"%s",buf];                 \
-                                                                              \
-            if ( [appName isEqual:procName] ) {                               \
-                                                                              \
-                *pid = procPid;                                               \
-                                                                              \
-                break;                                                        \
-            }                                                                 \
-        }                                                                     \
-    }                                                                         \
-                                                                              \
-    if (proc_list) free(proc_list);                                           \
-}
-
 #define DBGCHK_P_TRACED 0x00000800	/* Debugged process being traced */
 
 #define debugCheck(cb) {                                                       \
-    pid_t pid = 0;                                                             \
-                                                                               \
-    dbgGetPid(&pid);                                                           \
                                                                                \
     size_t sz = sizeof(struct kinfo_proc);                                     \
                                                                                \
@@ -101,7 +49,7 @@ int readSys(int *, u_int, void *, size_t *);
     name [0] = CTL_KERN;                                                       \
     name [1] = KERN_PROC;                                                      \
     name [2] = KERN_PROC_PID;                                                  \
-    name [3] = pid;                                                            \
+    name [3] = getpid();                                                       \
                                                                                \
     if (sysCtl(name,4,&info,&sz) != 0) exit(EXIT_FAILURE);                     \
                                                                                \
